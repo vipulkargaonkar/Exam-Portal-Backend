@@ -11,6 +11,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin("*")
 public class UserController {
 
     private final UserService userService;
@@ -21,6 +22,7 @@ public class UserController {
 
     @PostMapping("/create")
     public UserEntity createUser(@RequestBody UserEntity user) throws Exception {
+        user.setProfile("DEFAULT");
         Set<UserRoleEntity> roles = new HashSet<>();
 
         RolesEntity role = new RolesEntity();
