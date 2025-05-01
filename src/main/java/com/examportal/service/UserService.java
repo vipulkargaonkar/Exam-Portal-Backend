@@ -9,7 +9,7 @@ public interface UserService {
 
     public UserEntity createUser(UserEntity user, Set<UserRoleEntity> userRoles) throws Exception;
 
-    public UserEntity getUser(String userName);
+    public UserEntity getUser(String username);
 
     public void deleteUser(Long id);
 

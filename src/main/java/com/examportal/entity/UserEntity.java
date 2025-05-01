@@ -1,21 +1,26 @@
 package com.examportal.entity;
 
+import com.examportal.model.Authority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String userName;
+    @Column(name = "USER_NAME")
+    private String username;
 
     private String password;
 
@@ -38,9 +43,9 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(Long id, String userName, String password, String firstName, String lastName, String email, String phone, boolean enabled, String profile, Set<UserRoleEntity> userRoles) {
+    public UserEntity(Long id, String username, String password, String firstName, String lastName, String email, String phone, boolean enabled, String profile, Set<UserRoleEntity> userRoles) {
         this.id = id;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,12 +64,13 @@ public class UserEntity {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<Authority> set = new HashSet<>();
+        userRoles.forEach(userRole -> {
+            set.add(new Authority(userRole.getRole().getRoleName()));
+        });
+        return set;
     }
 
     public String getPassword() {
@@ -73,6 +79,26 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
     public String getFirstName() {
@@ -135,19 +161,19 @@ public class UserEntity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return enabled == that.enabled && Objects.equals(id, that.id) && Objects.equals(userName, that.userName) && Objects.equals(password, that.password) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(profile, that.profile) && Objects.equals(userRoles, that.userRoles);
+        return enabled == that.enabled && Objects.equals(id, that.id) && Objects.equals(username, that.username) && Objects.equals(password, that.password) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(profile, that.profile) && Objects.equals(userRoles, that.userRoles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, password, firstName, lastName, email, phone, enabled, profile, userRoles);
+        return Objects.hash(id, username, password, firstName, lastName, email, phone, enabled, profile, userRoles);
     }
 
     @Override
     public String toString() {
         return "UserEntity{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

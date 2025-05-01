@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity createUser(UserEntity user, Set<UserRoleEntity> userRoles) throws Exception {
-        UserEntity dbUser = getUser(user.getUserName());
+        UserEntity dbUser = getUser(user.getUsername());
 
         if (nonNull(dbUser))
             throw new Exception("User already present");
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getUser(String userName) {
-        return userRepository.findByUserName(userName);
+        return userRepository.findByUsername(userName);
     }
 
     @Override

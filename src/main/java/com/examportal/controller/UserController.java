@@ -38,9 +38,9 @@ public class UserController {
         return userService.createUser(user, roles);
     }
 
-    @GetMapping("/{userName}")
-    public UserEntity getUser(@PathVariable("userName") String userName) {
-        return userService.getUser(userName);
+    @GetMapping("/{username}")
+    public UserEntity getUser(@PathVariable("username") String username) {
+        return userService.getUser(username);
     }
 
     @DeleteMapping("/{id}")
