@@ -1,5 +1,6 @@
 package com.examportal.controller;
 
+import com.examportal.entity.UserEntity;
 import com.examportal.model.JwtRequest;
 import com.examportal.model.JwtResponse;
 import com.examportal.service.impl.UserDetailsServiceImpl;
@@ -10,10 +11,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @CrossOrigin("*")
@@ -50,6 +50,11 @@ public class AuthenticateController {
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID CREDENTIALS");
         }
+    }
+
+    @GetMapping("/current-user")
+    public UserEntity getCurrentUser(Principal principal) {
+        return ((UserEntity) this.userDetailsService.loadUserByUsername(principal.getName()));
     }
 
 }
