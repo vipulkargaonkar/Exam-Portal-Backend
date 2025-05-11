@@ -39,11 +39,10 @@ public class QuestionController {
     @GetMapping("/quiz/{qid}")
     public ResponseEntity<?> getQuestionOfQuiz(@PathVariable("qid") Long qid) {
         QuizEntity quiz = quizService.getQuiz(qid);
-        Set<QuestionEntity> questions = quiz.getQuestions();
+        Set<QuestionEntity> questions = questionService.getQuestionsOfQuiz(quiz);
         List<QuestionEntity> list = new ArrayList<>(questions);
-        if (list.size() > Integer.parseInt(quiz.getNoOfQuestions())) {
-            list = list.subList(0, Integer.parseInt(quiz.getNoOfQuestions() + 1));
-        }
+        if (!list.isEmpty())
+            list = list.subList(0, questions.size());
         Collections.shuffle(list);
         return ResponseEntity.ok(list);
     }
