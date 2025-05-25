@@ -19,4 +19,8 @@ public interface QuizService {
     public void deleteQuiz(Long quizId);
 
     List<QuizEntity> getQuizzesOfCategory(CategoryEntity category);
+
+    public List<QuizEntity> getActiveQuizzes();
+
+    public List<QuizEntity> getActiveQuizzesOfCategory(CategoryEntity category);
 }
