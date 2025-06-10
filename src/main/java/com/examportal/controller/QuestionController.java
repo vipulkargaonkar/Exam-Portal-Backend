@@ -7,10 +7,7 @@ import com.examportal.service.QuizService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/question")
@@ -63,5 +60,26 @@ public class QuestionController {
     @DeleteMapping("/{quesId}")
     public void deleteQuestion(@PathVariable("quesId") Long quesId) {
         questionService.deleteQuestion(quesId);
+    }
+
+    @PostMapping("/eval-quiz")
+    public ResponseEntity<?> evalQuiz(@RequestBody List<QuestionEntity> questions) {
+        double marksGot = 0;
+        int correctAnswer = 0;
+        int attempted = 0;
+        for (QuestionEntity q : questions) {
+            QuestionEntity question = questionService.get(q.getQuesId());
+            if (question.getAnswer().equals(q.getGivenAnswer())) {
+                correctAnswer++;
+                double marksSingle = Double.parseDouble(questions.get(0).getQuiz().getMaxMarks()) / questions.size();
+                marksGot += marksSingle;
+            }
+
+            if (q.getGivenAnswer() != null) {
+                attempted++;
+            }
+        }
+        Map<String, Object> map = Map.of("marksGot", marksGot, "correctAnswers", correctAnswer, "attempted", attempted);
+        return ResponseEntity.ok(map);
     }
 }

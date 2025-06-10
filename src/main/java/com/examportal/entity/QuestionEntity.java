@@ -26,6 +26,9 @@ public class QuestionEntity {
 
     private String answer;
 
+    @Transient
+    private String givenAnswer;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private QuizEntity quiz;
 
@@ -108,6 +111,14 @@ public class QuestionEntity {
         this.answer = answer;
     }
 
+    public String getGivenAnswer() {
+        return givenAnswer;
+    }
+
+    public void setGivenAnswer(String givenAnswer) {
+        this.givenAnswer = givenAnswer;
+    }
+
     public QuizEntity getQuiz() {
         return quiz;
     }
@@ -120,12 +131,12 @@ public class QuestionEntity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         QuestionEntity that = (QuestionEntity) o;
-        return Objects.equals(quesId, that.quesId) && Objects.equals(content, that.content) && Objects.equals(image, that.image) && Objects.equals(option1, that.option1) && Objects.equals(option2, that.option2) && Objects.equals(option3, that.option3) && Objects.equals(option4, that.option4) && Objects.equals(answer, that.answer) && Objects.equals(quiz, that.quiz);
+        return Objects.equals(quesId, that.quesId) && Objects.equals(content, that.content) && Objects.equals(image, that.image) && Objects.equals(option1, that.option1) && Objects.equals(option2, that.option2) && Objects.equals(option3, that.option3) && Objects.equals(option4, that.option4) && Objects.equals(answer, that.answer) && Objects.equals(givenAnswer, that.givenAnswer) && Objects.equals(quiz, that.quiz);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(quesId, content, image, option1, option2, option3, option4, answer, quiz);
+        return Objects.hash(quesId, content, image, option1, option2, option3, option4, answer, givenAnswer, quiz);
     }
 
     @Override
@@ -139,6 +150,7 @@ public class QuestionEntity {
                 ", option3='" + option3 + '\'' +
                 ", option4='" + option4 + '\'' +
                 ", answer='" + answer + '\'' +
+                ", givenAnswer='" + givenAnswer + '\'' +
                 ", quiz=" + quiz +
                 '}';
     }

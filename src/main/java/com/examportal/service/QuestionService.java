@@ -17,5 +17,7 @@ public interface QuestionService {
 
     public Set<QuestionEntity> getQuestionsOfQuiz(QuizEntity quiz);
 
-    void deleteQuestion(Long quesId);
+    public void deleteQuestion(Long quesId);
+
+    public QuestionEntity get(Long quesId);
 }
