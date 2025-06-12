@@ -40,6 +40,9 @@ public class QuestionController {
         List<QuestionEntity> list = new ArrayList<>(questions);
         if (!list.isEmpty())
             list = list.subList(0, questions.size());
+        list.forEach((ques) -> {
+            ques.setAnswer("");
+        });
         Collections.shuffle(list);
         return ResponseEntity.ok(list);
     }
