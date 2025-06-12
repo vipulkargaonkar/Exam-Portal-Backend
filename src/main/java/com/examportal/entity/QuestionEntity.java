@@ -1,5 +1,6 @@
 package com.examportal.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -24,6 +25,7 @@ public class QuestionEntity {
 
     private String option4;
 
+    @JsonIgnore
     private String answer;
 
     @Transient
